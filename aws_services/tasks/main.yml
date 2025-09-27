@@ -21,7 +21,8 @@
     runtime: python3.9
     role: "{{ lambda_role_arn }}"
     handler: index.handler
-    src: "{{ role_path }}/files/minimal_lambda.zip"
+    # src: "{{ role_path }}/files/minimal_lambda.zip"
+    src: "{{ playbook_dir }}/aws_services/files/minimal_lambda.zip"
     region: "{{ aws_region }}"
   loop: "{{ lambda_functions }}"
 
