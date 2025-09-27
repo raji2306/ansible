@@ -14,23 +14,6 @@
     wait: yes
     count: 1
 
----
-- name: Create S3 bucket
-  amazon.aws.s3_bucket:
-    name: "{{ s3_bucket_name }}"
-    state: present
-    region: "{{ aws_region }}"
-
-- name: Launch EC2 instance
-  amazon.aws.ec2_instance:
-    name: "Ansible-EC2"
-    key_name: "{{ ec2_key_name }}"
-    instance_type: "{{ ec2_instance_type }}"
-    image_id: "{{ ec2_ami }}"
-    region: "{{ aws_region }}"
-    wait: yes
-    count: 1
-
 - name: Ensure lambda folder exists
   ansible.builtin.file:
     path: "{{ playbook_dir }}/lambda"
