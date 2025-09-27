@@ -1,0 +1,27 @@
+- name: Create S3 bucket
+  amazon.aws.s3_bucket:
+    name: "{{ s3_bucket_name }}"
+    state: present
+    region: "{{ aws_region }}"
+
+- name: Launch EC2 instance
+  amazon.aws.ec2_instance:
+    name: "Ansible-EC2"
+    key_name: "{{ ec2_key_name }}"
+    instance_type: "{{ ec2_instance_type }}"
+    image_id: "{{ ec2_ami }}"
+    region: "{{ aws_region }}"
+    wait: yes
+    count: 1
+
+- name: Create minimal Lambda functions
+  amazon.aws.lambda:
+    state: present
+    name: "{{ item.name }}"
+    runtime: python3.9
+    role: "{{ lambda_role_arn }}"
+    handler: index.handler
+    src: "{{ role_path }}/files/minimal_lambda.zip"
+    region: "{{ aws_region }}"
+  loop: "{{ lambda_functions }}"
+

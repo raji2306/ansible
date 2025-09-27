@@ -1,0 +1,11 @@
+#SPDX-License-Identifier: MIT-0
+---
+# defaults file for aws_services
+
+aws_region: "ap-south-1"
+ec2_instance_type: "t2.micro"
+ec2_ami: "ami-08962a4068733a2b6"
+ec2_key_name: "my-aws-key"
+s3_bucket_name: "my-unique-bucket-ansible-{{ 99999 | random }}"
+dynamodb_table_name: "ansible-dynamodb-table"
+
