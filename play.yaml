@@ -1,5 +1,5 @@
 - name: Deploy AWS Resources using Ansible Role
-  hosts: aws-agent1
+  hosts: all
   gather_facts: false
   collections:
     - amazon.aws
