@@ -14,6 +14,13 @@
     wait: yes
     count: 1
 
+- name: Ensure /tmp exists on controller
+  ansible.builtin.file:
+    path: /tmp
+    state: directory
+    mode: '0755'
+  delegate_to: localhost
+  
 - name: Copy Lambda ZIP to /tmp
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/aws_services/files/minimal_lambda.zip"
