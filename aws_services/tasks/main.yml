@@ -28,6 +28,12 @@
     mode: '0644'
   delegate_to: localhost
 
+- name: List all files in a directory
+  ansible.builtin.find:
+    paths: "/tmp"        # directory you want to list
+    file_type: any       # can be 'file', 'directory', or 'any'
+  register: dir_contents
+
 - name: Create minimal Lambda functions
   amazon.aws.lambda:
     state: present
