@@ -14,6 +14,11 @@
     wait: yes
     count: 1
 
+- name: Copy Lambda ZIP to remote
+  copy:
+    src: "roles/aws_services/files/minimal_lambda.zip"
+    dest: "/tmp/minimal_lambda.zip"
+
 - name: Create minimal Lambda functions
   amazon.aws.lambda:
     state: present
@@ -21,8 +26,10 @@
     runtime: python3.9
     role: "{{ lambda_role_arn }}"
     handler: index.handler
-    # src: "{{ role_path }}/files/minimal_lambda.zip"
-    src: "{{ playbook_dir }}/aws_services/files/minimal_lambda.zip"
+    src: "/tmp/minimal_lambda.zip"
+    region: "{{ aws_region }}"
+  loop: "{{ lambda_functions }}
+    src: "~/aws_services/files/minimal_lambda.zip"
     region: "{{ aws_region }}"
   loop: "{{ lambda_functions }}"
 
