@@ -30,6 +30,3 @@
     src: "/tmp/minimal_lambda.zip"
     region: "{{ aws_region }}"
   loop: "{{ lambda_functions }}"
-
-    region: "{{ aws_region }}"
-  loop: "{{ lambda_functions }}"
