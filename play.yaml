@@ -1,0 +1,7 @@
+- name: Deploy AWS Resources using Ansible Role
+  hosts: localhost
+  gather_facts: false
+  collections:
+    - amazon.aws
+  roles:
+    - aws_services
