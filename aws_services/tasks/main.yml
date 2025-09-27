@@ -13,6 +13,7 @@
     region: "{{ aws_region }}"
     wait: yes
     count: 1
+
 - name: Ensure lambda folder exists
   ansible.builtin.file:
     path: "{{ playbook_dir }}/lambda"
@@ -32,6 +33,6 @@
     runtime: python3.9
     role: "{{ lambda_role_arn }}"
     handler: index.handler
-    src: "{{ playbook_dir }}/files/minimal_lambda.zip"
+    src: "/tmp/minimal_lambda.zip"
     region: "{{ aws_region }}"
   loop: "{{ lambda_functions }}"
