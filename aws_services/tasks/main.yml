@@ -14,12 +14,15 @@
     wait: yes
     count: 1
 
-- name: Copy Lambda ZIP to remote host
-  copy:
-    src: "{{ playbook_dir }}/aws_services/files/minimal_lambda.zip"
+# 1️⃣ Copy Lambda ZIP to the controller (or remote host if needed)
+- name: Copy Lambda ZIP to /tmp
+  ansible.builtin.copy:
+    src: "aws_services/files/minimal_lambda.zip"
     dest: "/tmp/minimal_lambda.zip"
     mode: '0644'
+  delegate_to: localhost
 
+# 2️⃣ Create minimal Lambda functions
 - name: Create minimal Lambda functions
   amazon.aws.lambda:
     state: present
@@ -30,3 +33,5 @@
     src: "/tmp/minimal_lambda.zip"
     region: "{{ aws_region }}"
   loop: "{{ lambda_functions }}"
+  delegate_to: localhost
+
