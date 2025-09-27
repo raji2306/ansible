@@ -14,7 +14,6 @@
     wait: yes
     count: 1
 
-roles/aws_services/tasks/main.yml
 ---
 - name: Create S3 bucket
   amazon.aws.s3_bucket:
@@ -38,6 +37,13 @@ roles/aws_services/tasks/main.yml
     state: directory
     mode: '0755'
 
+- name: Copy Lambda ZIP to /tmp
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/minimal_lambda.zip"
+    dest: "/tmp/minimal_lambda.zip"
+    mode: '0644'
+  delegate_to: localhost
+
 - name: Create minimal Lambda functions
   amazon.aws.lambda:
     state: present
@@ -45,6 +51,8 @@ roles/aws_services/tasks/main.yml
     runtime: python3.9
     role: "{{ lambda_role_arn }}"
     handler: index.handler
-    src: "{{ role_path }}/files/minimal_lambda.zip"
+    src: "/tmp/minimal_lambda.zip"
+    environment_variables: "{{ item.env_vars }}"
     region: "{{ aws_region }}"
   loop: "{{ lambda_functions }}"
+  delegate_to: localhost
