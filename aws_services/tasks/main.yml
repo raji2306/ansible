@@ -16,7 +16,7 @@
 
 - name: Copy Lambda ZIP to remote
   copy:
-    src: "roles/aws_services/files/minimal_lambda.zip"
+    src: "{{ playbook_dir }}/aws_services/files/minimal_lambda.zip"
     dest: "/tmp/minimal_lambda.zip"
 
 - name: Create minimal Lambda functions
@@ -26,8 +26,6 @@
     runtime: python3.9
     role: "{{ lambda_role_arn }}"
     handler: index.handler
-    src: "/tmp/minimal_lambda.zip"   # make sure this file exists on slave
+    src: "/tmp/minimal_lambda.zip"
     region: "{{ aws_region }}"
   loop: "{{ lambda_functions }}"
-
-
