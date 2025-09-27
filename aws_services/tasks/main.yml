@@ -14,12 +14,11 @@
     wait: yes
     count: 1
 
-- name: Ensure /tmp exists on controller
+- name: Ensure /tmp/mydir exists
   ansible.builtin.file:
-    path: /tmp
-    state: directory
-    mode: '0755'
-  delegate_to: localhost
+    path: /tmp    # directory you want to create
+    state: directory    # ensures it's a directory
+    mode: '0755'        # permissions (optional)
   
 - name: Copy Lambda ZIP to /tmp
   ansible.builtin.copy:
