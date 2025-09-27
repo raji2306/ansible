@@ -14,43 +14,33 @@
     wait: yes
     count: 1
 
-# Make sure a folder exists in your project directory
-- name: Ensure lambda folder exists in project directory
+- name: Ensure lambda folder exists at repo root
   ansible.builtin.file:
-    path: "{{ playbook_dir }}/lambda"
+    path: "{{ playbook_dir | dirname }}/lambda"
     state: directory
     mode: '0755'
   delegate_to: localhost
 
-# Copy the Lambda ZIP into that folder
-- name: Copy Lambda ZIP to project folder
+- name: Copy Lambda ZIP to repo root folder
   ansible.builtin.copy:
-    src: "{{ playbook_dir }}/aws_services/files/minimal_lambda.zip"
-    dest: "{{ playbook_dir }}/lambda/minimal_lambda.zip"
+    src: "{{ playbook_dir }}/../files/minimal_lambda.zip"   # adjust if needed
+    dest: "{{ playbook_dir | dirname }}/lambda/minimal_lambda.zip"
     mode: '0644'
   delegate_to: localhost
 
-# (Optional) list files to confirm
-- name: List files in lambda folder
-  ansible.builtin.find:
-    paths: "{{ playbook_dir }}/lambda"
-    file_type: any
-  register: dir_contents
+- name: Debug path
+  ansible.builtin.debug:
+    msg: "Zip path: {{ playbook_dir | dirname }}/lambda/minimal_lambda.zip"
   delegate_to: localhost
 
-- debug:
-    var: dir_contents.files | map(attribute='path') | list
-  delegate_to: localhost
-
-# Use the file from project folder for Lambda creation
-- name: Create minimal Lambda functions
+- name: Create Lambda function
   amazon.aws.lambda:
     state: present
     name: "{{ item.name }}"
     runtime: python3.9
     role: "{{ lambda_role_arn }}"
     handler: index.handler
-    src: "{{ playbook_dir }}/lambda/minimal_lambda.zip"
+    src: "{{ playbook_dir | dirname }}/lambda/minimal_lambda.zip"
     region: "{{ aws_region }}"
   loop: "{{ lambda_functions }}"
   delegate_to: localhost
