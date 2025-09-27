@@ -23,7 +23,7 @@
 
 - name: Copy Lambda ZIP to /tmp
   ansible.builtin.copy:
-    src: "{{ role_path }}/files/minimal_lambda.zip"
+    src: "{{ playbook_dir }}/files/minimal_lambda.zip"
     dest: "/tmp/minimal_lambda.zip"
     mode: '0644'
   delegate_to: localhost
@@ -39,4 +39,3 @@
     region: "{{ aws_region }}"
   loop: "{{ lambda_functions }}"
   delegate_to: localhost
-
