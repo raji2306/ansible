@@ -3,6 +3,7 @@
     name: "{{ s3_bucket_name }}"
     state: present
     region: "{{ aws_region }}"
+  when: not dry_run | default(false)
 
 - name: Launch EC2 instance
   amazon.aws.ec2_instance:
@@ -13,6 +14,7 @@
     region: "{{ aws_region }}"
     wait: yes
     count: 1
+  when: not dry_run | default(false)
 
 - name: Create minimal Lambda functions
   amazon.aws.lambda:
@@ -24,3 +26,4 @@
     src: "{{ role_path }}/files/minimal_lambda.zip"
     region: "{{ aws_region }}"
   loop: "{{ lambda_functions }}"
+  when: not dry_run | default(false)
