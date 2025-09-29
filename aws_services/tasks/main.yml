@@ -14,14 +14,6 @@
     wait: yes
     count: 1
 
-- name: Copy Lambda ZIP to /tmp
-  ansible.builtin.copy:
-    src: "{{ role_path }}/files/minimal_lambda.zip"
-    dest: "/tmp/minimal_lambda.zip"
-    mode: '0644'
-  delegate_to: localhost
-  run_once: true   # ensure it copies only once
-
 - name: Create minimal Lambda functions
   amazon.aws.lambda:
     state: present
@@ -29,9 +21,6 @@
     runtime: python3.9
     role: "{{ lambda_role_arn }}"
     handler: index.handler
-    src: "{{ '/tmp/minimal_lambda.zip' }}"
-    environment_variables: "{{ item.env_vars }}"
+    src: "{{ role_path }}/files/minimal_lambda.zip"
     region: "{{ aws_region }}"
   loop: "{{ lambda_functions }}"
-  delegate_to: localhost
-
