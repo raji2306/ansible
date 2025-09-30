@@ -33,19 +33,24 @@
 - name: Install NGINX on launched instance
   become: yes
   delegate_to: "{{ item.public_ip_address }}"
+  vars:
+    ansible_user: ubuntu
   loop: "{{ ec2.instances }}"
   loop_control:
     label: "{{ item.public_ip_address }}"
+  ansible.builtin.package:
+    name: "{{ nginx_package }}"
+    state: present
+
+- name: Start and enable NGINX
+  become: yes
+  delegate_to: "{{ item.public_ip_address }}"
   vars:
     ansible_user: ubuntu
-  block:
-    - name: Install NGINX
-      ansible.builtin.package:
-        name: "{{ nginx_package }}"
-        state: present
-
-    - name: Start and enable NGINX
-      ansible.builtin.service:
-        name: "{{ nginx_package }}"
-        state: started
-        enabled: yes
+  loop: "{{ ec2.instances }}"
+  loop_control:
+    label: "{{ item.public_ip_address }}"
+  ansible.builtin.service:
+    name: "{{ nginx_package }}"
+    state: started
+    enabled: yes
