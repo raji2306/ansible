@@ -31,12 +31,14 @@
   loop: "{{ ec2.instances }}"
 
 - name: Install NGINX on launched instance
-  delegate_to: "{{ item.public_ip_address }}"
   become: yes
+  delegate_to: "{{ item.public_ip_address }}"
   loop: "{{ ec2.instances }}"
   loop_control:
     label: "{{ item.public_ip_address }}"
-  tasks:
+  vars:
+    ansible_user: ubuntu
+  block:
     - name: Install NGINX
       ansible.builtin.package:
         name: "{{ nginx_package }}"
