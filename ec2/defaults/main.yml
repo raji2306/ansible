@@ -8,3 +8,4 @@ aws_image_id: "ami-0360c520857e3138f"
 aws_security_group: "semaphore"
 aws_tag_name: "nginx-server"
 nginx_port: 80
+nginx_package: "nginx"
