@@ -1,0 +1,10 @@
+---
+# defaults file for ec2
+
+aws_region: "us-east-1"
+aws_key_name: "semaphore"
+aws_instance_type: "t2.micro"
+aws_image_id: "ami-0360c520857e3138f"
+aws_security_group: "semaphore"
+aws_tag_name: "nginx-server"
+nginx_port: 80
