@@ -4,4 +4,4 @@
   collections:
     - amazon.aws
   roles:
-    - aws_services
+    - ec2
