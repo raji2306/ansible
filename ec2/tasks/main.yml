@@ -1,6 +1,10 @@
 ---
 # tasks file for ec2
 
+- name: Show aws_instance_type from Semaphore
+  debug:
+    var: aws_instance_type
+    
 - name: Launch EC2 instance
   amazon.aws.ec2_instance:
     name: "{{ aws_tag_name }}"
