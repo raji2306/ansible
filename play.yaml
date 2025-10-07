@@ -1,5 +1,5 @@
 - name: Deploy AWS Resources using Ansible Role
-  hosts: all
+  hosts: localhost
   gather_facts: false
   # check_mode: yes
   collections:
